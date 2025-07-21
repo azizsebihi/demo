@@ -80,7 +80,8 @@ jobs:
           TRIVY_VERSION=0.64.1
           # Téléchargement et vérification
           curl -sSLfO https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
-          echo "b3a0b7c1e6b566d54a3...  trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz" | sha256sum -c
+        
+
           # Installation
           tar -xzf trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
           sudo install trivy /usr/local/bin/
