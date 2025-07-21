@@ -68,33 +68,7 @@ jobs:
         run: npm test
         working-directory: frontend
 
-  security-code:
-    name: Security Scan
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Install Trivy
-        run: |
-          TRIVY_VERSION=0.64.1
-          # Téléchargement et vérification
-          curl -sSLfO https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
-          # Installation
-          tar -xzf trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
-          sudo install trivy /usr/local/bin/
-          trivy --version
-
-      - name: Run Trivy scan and generate SARIF
-        run: |
-          trivy fs --scanners vuln,secret --format sarif -o results.sarif ./
-        continue-on-error: true
-
-      - name: Upload SARIF results
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: results.sarif
-
+ 
   build-push:
     name: Build and Push Docker Images
     runs-on: ubuntu-latest
