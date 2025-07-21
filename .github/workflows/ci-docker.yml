@@ -90,7 +90,7 @@ jobs:
       - name: Scan with Trivy
         run: |
           trivy fs \
-            --security-check vuln,secret \
+            --scanners vuln,secret \
             --exit-code 1 \
             --severity CRITICAL,HIGH \
             --no-progress \
