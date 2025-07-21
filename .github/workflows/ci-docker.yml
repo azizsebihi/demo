@@ -67,6 +67,34 @@ jobs:
       - name: Run frontend tests
         run: npm test
         working-directory: frontend
+  
+ security-code:
+  name: Security Scan
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install Trivy
+      run: |
+        TRIVY_VERSION=0.64.1
+        # Téléchargement et vérification
+        curl -sSLfO https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
+        echo "b3a0b7c1e6b566d54a3...  trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz" | sha256sum -c
+        # Installation
+        tar -xzf trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
+        sudo install trivy /usr/local/bin/
+        trivy --version
+
+    - name: Scan with Trivy
+      run: |
+        trivy fs \
+          --security-check vuln,secret \
+          --exit-code 1 \
+          --severity CRITICAL,HIGH \
+          --no-progress \
+          ./
+
 
   build-push:
     name: Build and Push Docker Images
